@@ -127,6 +127,18 @@ for i, data in enumerate(tqdm(test_dataloader, 0)):
 		# 3.2.1 load inputs and targets
 		if opt.dataset == "nyu":
 			img, points, gt_xyz, uvd_gt, center, M, cube, cam_para, volume_length = data
+
+			### 1) inputs from normal distribution
+			# v_i, m_i = torch.var_mean(img)
+			# v_p, m_p = torch.var_mean(points)	
+			# img = torch.normal(m_i, torch.sqrt(v_i), size=(128,1,128,128))
+			# points = torch.normal(m_p, torch.sqrt(v_p), size=(128,1024,3))
+
+			### random input as data
+			# img = torch.FloatTensor(128,1,128,128).uniform_(-1,1)
+			# points = torch.FloatTensor(128,1024,3).uniform_(-1,1.1)
+
+
 			volume_length = volume_length.cuda()
 		else:
 			img, points, gt_xyz, uvd_gt, center, M, cube, cam_para = data

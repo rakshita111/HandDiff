@@ -330,6 +330,12 @@ class HandModel(nn.Module):
         code = code.expand(code.size(0),code.size(1), self.joints)
         img_code = img_code.expand(img_code.size(0),img_code.size(1), self.joints)
 
+        ### 2) change intermediate 2D and 3D featues to values from a normal distribution
+        # v_code, m_code = torch.var_mean(code)
+        # v_img_code, m_img_code = torch.var_mean(img_code)
+        # code = torch.normal(m_code, torch.sqrt(v_code), size=(128,512,14)).cuda()
+        # img_code = torch.normal(m_img_code, torch.sqrt(v_img_code), size=(128,768,14)).cuda()
+
         latents = self.fold1(torch.cat((code, img_code),1))
         joints = self.regress_1(latents)
 
@@ -352,6 +358,11 @@ class HandModel(nn.Module):
 
     def sample(self, pc, feat, img, loader, center, M, cube, cam_para, h=5, step=20):
         latents, joints, pc1, feat1, img, img_feat = self.encode(pc, feat, img, loader, center, M, cube, cam_para)
+
+        ### 3) change joint values to values from a normal distribution
+        # v_latents, m_latents = torch.var_mean(latents)
+        # latents = torch.normal(m_latents, torch.sqrt(v_latents), size=(128,512,14)).cuda()
+        
         joints = self.diffusion.sample_mh(latents, pc1, feat1, img, img_feat, h, step, flexibility=0.0, ret_traj=False)
         return joints
 

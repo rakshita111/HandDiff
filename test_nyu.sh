@@ -1,1 +1,1 @@
-python3 eval_mh.py --gpu 0 --dataset nyu --test_path /workspace/dataset/NYU --test_step 1 --test_hypo 2
+python3 eval_mh.py --gpu 0 --dataset nyu --test_path /home/rrangan2/dataset/ --test_step 1 --test_hypo 2
